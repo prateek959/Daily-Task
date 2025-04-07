@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <input type="text" placeholder="Enter Name" id="name">
+    <input type="email" placeholder="Enter Email" id="email">
+    <input type="number" placeholder="Enter Phone No" id="phone">
+    <button onclick="add()">ADD</button>
+    <table border="2" id="table" style="width: 100%;">
+        <tr>
+            <th>Name</th>
+            <th>email</th>
+            <th>Phone No</th>
+            <th>Actions</th>
+        </tr>
+    </table>
+
+    <script>
+        let idCounter = 1;
+        function add() {
+            let name = document.getElementById('name').value;
+            let email = document.getElementById('email').value;
+            let number = document.getElementById('phone').value;
+            if (name === "" || email === "" || number === "") {
+                alert("Please fill in all fields.");
+                return;
+            }
+            let table = document.getElementById('table');
+            let row = document.createElement('tr');
+            row.id = 'row-' + idCounter;
+            let d1 = document.createElement('td');
+            d1.className = 'name'
+            d1.innerHTML = `${name}`
+            let d2 = document.createElement('td');
+            d2.className = 'email'
+            d2.innerHTML = `${email}`
+            let d3 = document.createElement('td');
+            d3.className = 'number'
+            d3.innerHTML = `${number}`
+            let d4 = document.createElement('td');
+            d4.innerHTML = `<button onclick="editRow(${idCounter})">Edit</button><button onclick="deleteRow(${idCounter})">Delete</button>`
+            row.appendChild(d1);
+            row.appendChild(d2);
+            row.appendChild(d3);
+            row.appendChild(d4);
+            table.appendChild(row);
+            document.getElementById('name').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('phone').value = '';
+            idCounter++;
+        }
+
+        function deleteRow(id) {
+            let row = document.getElementById(`row-${id}`);
+            row.remove();
+        }
+
+        function editRow(id) {
+            let row = document.getElementById(`row-${id}`);
+            console.log(row)
+            console.log(row.getElementsByClassName('name'))
+            let name = row.getElementsByClassName('name')[0];
+            let email = row.getElementsByClassName('email')[0];
+            let number = row.getElementsByClassName('number')[0];
+
+            document.getElementById('name').value = name.innerHTML;
+            document.getElementById('email').value = email.innerHTML;
+            document.getElementById('phone').value = number.innerHTML;
+
+            let button = document.querySelector('button[onclick="add()"]');
+            button.innerHTML = "Update";
+            button.setAttribute("onclick", `updateRow(${id})`);
+        }
+
+        function updateRow(id) {
+            let name = document.getElementById('name').value;
+            let email = document.getElementById('email').value;
+            let number = document.getElementById('phone').value;
+
+           
+            if (name === "" || email === "" || number === "") {
+                alert("Please fill in all fields.");
+                return;
+            }
+
+            let row = document.getElementById(`row-${id}`);
+            let nameCell = row.getElementsByClassName('name')[0];
+            let emailCell = row.getElementsByClassName('email')[0];
+            let numberCell = row.getElementsByClassName('number')[0];
+
+     
+            nameCell.innerHTML = name;
+            emailCell.innerHTML = email;
+            numberCell.innerHTML = number;
+
+           
+            document.getElementById('name').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('phone').value = '';
+
+            let button = document.querySelector('button[onclick="updateRow()"]');
+            button.innerHTML = "ADD";
+            button.setAttribute("onclick", "add()");
+        }
+    </script>
+</body>
+
+</html>
