@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Input</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .container input {
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            font-size: 24px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            transition: border-color 0.3s;
+        }
+
+        .container input:focus {
+            border-color: #4CAF50;
+            outline: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <input type="text" maxlength="1" required />
+        <input type="text" maxlength="1" required />
+        <input type="text" maxlength="1" required />
+        <input type="text" maxlength="1" required />
+        <input type="text" maxlength="1" required />
+        <input type="text" maxlength="1" required />
+    </div>
+    <button onclick="OTP()">Generate OTP</button>
+    <button onclick="verify()">Verify OTP</button>
+    <script>
+        function OTP() {
+            const number = Math.random().toFixed(6) * 1000000;
+            console.log(number);
+            localStorage.setItem('OTP', number);
+            let time = 0;
+            let interval = setInterval(() => {
+                console.log(time++);
+            }, 1000);
+            setTimeout(() => {
+                localStorage.clear();
+                clearInterval(interval);
+            }, 30000);
+        }
+
+        const inputs = document.querySelectorAll("input");
+
+        inputs.forEach((i, index) => {
+            i.addEventListener("input", () => {
+                if (i.value.length == 1 && index < inputs.length - 1) {
+                    inputs[index + 1].focus();
+                }
+            })
+
+            i.addEventListener("keydown", (e) => {
+                if (e.key == 'Backspace' && i.value == '' && index > 0) {
+                    inputs[index - 1].focus();
+                }
+            })
+        });
+
+        function verify() {
+            let generateOtp = localStorage.getItem("OTP");
+            if(!generateOtp){    
+             alert("OTP Expire");
+             clear();
+             return;
+            }
+            generateOtp = generateOtp.split('');
+            for (let i = 0; i < 6; i++) {
+                if (generateOtp[i] !== inputs[i].value) {
+                    clear();
+                    return alert("OTP Wrong");
+                }
+            }
+            localStorage.clear();
+            alert("OTP Correct");
+            clear();
+        }
+
+        function clear() {
+            for (let i = 0; i < 6; i++) {
+                inputs[i].value = "";
+            };
+        }
+
+
+
+
+    </script>
+</body>
+
+</html>
