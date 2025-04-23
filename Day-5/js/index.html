@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+
+    <button id="btn">Click</button>
+    <script>
+        let ans = true;
+        const res = new Promise((resolve, reject) => {
+            if (ans) {
+                resolve(4);
+            } else {
+                reject(new Error("Something went wrong"));
+            }
+        });
+
+        res
+            .then((data) => { console.log(data) })
+            .catch((error) => console.error(error));
+
+            function debounce(fn, delay) {
+            let timeout;
+            return function () {
+                clearTimeout(timeout);
+               timeout = setTimeout(() => {
+                    fn();
+                }, delay);
+            }
+        }
+
+        function fun() {
+            console.log('Hello debounce');
+        }
+
+        const debounceRun = debounce(fun, 2000);
+        let btn = document.getElementById('btn')
+        btn.addEventListener("click", debounceRun);
+
+    </script>
+</body>
+
+</html>
